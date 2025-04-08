@@ -7,12 +7,16 @@ from sqlalchemy.ext.asyncio import (
 )
 from .base import (
     Base,
-    Wallet
+    Request
 )
+
+from .request import RequestRepository
 
 
 __all__ = [
     "UoW",
+    "Request",
+    "RequestRepository"
 ]
 
 T = TypeVar(
@@ -27,7 +31,7 @@ K = TypeVar(
     bound=Annotated[
         type,
         Any,
-        Wallet
+        Request
     ]
 )
 V = TypeVar(
@@ -35,7 +39,7 @@ V = TypeVar(
     bound=Annotated[
         type,
         Any,
-        Wallet
+        RequestRepository
     ]
 )
 

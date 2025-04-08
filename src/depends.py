@@ -2,12 +2,9 @@
 from sqlalchemy.ext.asyncio import create_async_engine
 from sqlalchemy import URL
 
-from tronpy.async_tron import (
-    AsyncTron,
-    AsyncHTTPProvider
-)
-
-from src.repositories import UoW
+from src.enums.tron import Network
+from src.frameworks import *
+from src.repositories import *
 from .config import *
 
 
@@ -23,10 +20,16 @@ postgres_url = URL.create(
 engine = create_async_engine(url=postgres_url)
 uow = UoW(engine=engine)
 
-# --- Tron initialize --- #
-provider = AsyncHTTPProvider(
-    TRON_PROVIDER_URI
-)
-tron_client = AsyncTron(
-    provider=provider
-)
+# --- Repositories initialize --- #
+uow[Request] = RequestRepository
+
+# --- Frameworks initialize --- #
+tron_framework = TronFramework()
+
+
+def get_tron_framework() -> TronFramework:
+    return tron_framework
+
+def get_request_repository() -> RequestRepository:
+    return uow[Request]
+

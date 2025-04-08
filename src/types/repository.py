@@ -24,14 +24,13 @@ T = TypeVar(
 
 
 class Repository[T](ABC):
-    @abstractmethod
     def __init__(
         self,
         session: T,
         relation: T
     ) -> None:
-        self._session = abs(session)
-        self._relation = abs(relation)
+        self._session = session
+        self._relation = relation
 
     @abstractmethod
     async def create(self, scheme: T) -> T:
