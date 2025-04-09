@@ -71,9 +71,9 @@ class UoW[T, K, V]:
         del self.__repositories[relation]
 
     async def metadata_create(self):
-        async with self._engine() as core:
+        async with self._engine.begin() as core:
             await core.run_sync(Base.metadata.create_all)
 
     async def metadata_drop(self):
-        async with self._engine() as core:
+        async with self._engine.begin() as core:
             await core.run_sync(Base.metadata.drop_all)

@@ -36,14 +36,3 @@ class TronFramework:
             yield client
         finally:
             await client.close()
-
-
-if __name__ == "__main__":
-    import asyncio
-
-    loop = asyncio.get_event_loop()
-    framework = TronFramework()
-    result = loop.run_until_complete(framework.get_response_form(
-        "TTJT3rGxcJLrHrjVj9iZR2BCXpWtt3t3t3"
-    ))
-    print(result)

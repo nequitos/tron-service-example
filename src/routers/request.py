@@ -52,9 +52,13 @@ async def create(
     response_model=list[RequestScheme]
 )
 async def read(
-    scheme: RequestReadScheme,
+    page: int = 0,
+    per_page: int = 0,
     repository: RequestRepository = Depends(get_request_repository)
 ) -> list[RequestScheme]:
+    scheme = RequestReadScheme(
+        page=page, per_page=per_page
+    )
     endpoint = await repository.read(scheme)
 
     if endpoint is None:

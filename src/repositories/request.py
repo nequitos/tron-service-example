@@ -10,6 +10,10 @@ from sqlalchemy import (
     select
 )
 
+from src.schemes.request import RequestScheme
+from src.utils import get_paginated_data
+
+
 
 class RequestRepository(Repository[T], ABC):
     async def create(self, scheme: T) -> T:
@@ -21,19 +25,29 @@ class RequestRepository(Repository[T], ABC):
 
         async with self._session() as session:
             await session.execute(stmt)
+            await session.commit()
 
         return scheme
 
     async def read(self, scheme: T) -> T | None:
-        stmt = select(self._relation).order_by(
-            self._relation.id
-        ).limit(scheme.limit).offset(scheme.start)
-
         async with self._session() as session:
-            result = await session.execute(stmt)
-
-            if result is not None:
-                return result.scalars()
+            paginated_data = await get_paginated_data(
+                session=session,
+                relation=self._relation,
+                page=scheme.page,
+                per_page=scheme.per_page
+            )
+            return [
+                RequestScheme(
+                    id=i.id,
+                    uuid=i.uuid,
+                    bandwidth=i.bandwidth,
+                    energy=i.energy,
+                    trx_balance=i.trx_balance,
+                    date=i.date
+                )
+                for i in paginated_data
+            ]
 
     async def update(self, scheme: T) -> T:
         pass

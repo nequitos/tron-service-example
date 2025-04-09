@@ -14,3 +14,7 @@ pytest==8.3.5
 
 # Environment
 environs==14.1.1
+
+# Other
+tronpy==0.5.0
+python-multipart==0.0.20

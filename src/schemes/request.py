@@ -17,5 +17,5 @@ class RequestScheme(RequestCreateScheme):
 
 
 class RequestReadScheme(Validator):
-    skip: int
-    limit: int
+    page: int
+    per_page: int
