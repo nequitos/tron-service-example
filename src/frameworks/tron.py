@@ -4,6 +4,7 @@ from typing import AsyncGenerator
 from contextlib import asynccontextmanager
 
 from tronpy.async_tron import AsyncTron, TAddress
+from tronpy.keys import to_base58check_address, to_hex_address
 
 from src.schemes.request import RequestCreateScheme
 from src.enums.tron import Network
@@ -19,6 +20,7 @@ class TronFramework:
 
     async def get_response_form(self, address: TAddress | str) -> RequestCreateScheme:
         async with self.context() as client:
+            address = to_base58check_address(address)
             trx_balance = await client.get_account_balance(addr=address)
             bandwidth = await client.get_bandwidth(addr=address)
             contract = await client.get_contract(addr=address)
